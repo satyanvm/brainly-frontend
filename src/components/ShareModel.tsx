@@ -24,7 +24,7 @@ export function ShareContentModel({open,  onclose , shareUrl}: {open: boolean, o
                   <div className="cursor-pointer" onClick={onclose}>   
                                 <CrossIcon />       
                                 </div>
-                                <br />
+                                <br /> 
                                 <div className="cursor-pointer">
                                    <Button variant = "primary" size = "md" text = "Copy link" onClick={async () => {
                                                                          onclose()      

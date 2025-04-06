@@ -1,22 +1,19 @@
-import axios from "axios";
-
- 
- 
- export function findDocument(link: String) {
-    try {
-        console.log("see see");
+export async function findDocument(link: String) {
+  try {
+      console.log("see see");
       console.log(link);
-    const response =  axios.get("http://localhost:3000/api/v1/findcontent", {
-       link: link
+
+      const response = await fetch(`http://localhost:3000/api/v1/findcontent?link=${(link)}`);
+      if (!response.ok) {
+        console.log("network response was not ok line");
+          throw new Error("Network response was not ok");
       }
-    ).then((response) => { 
-        
-            const id = response.data._id;
-            return id;
-            })
-    
-    } catch (error) {
+      const data_1 = await response.json();
+      const id = data_1.response._id;
+      return id;   
+
+  } catch (error) {
       console.error("Error fetching document:", error);
-      throw error;  
-    }
+      throw error;
   }
+}

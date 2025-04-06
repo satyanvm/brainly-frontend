@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ShareIcon } from "./Icons/ShareIcon.tsx";
 import {Tweet, TweetContainer } from 'react-tweet';
 import CustomTwitterEmbed from "./TweetEmbed.tsx";
@@ -6,10 +6,15 @@ import { DeleteIcon } from "./Icons/DeleteIcon.tsx";
 import { DeleteCard } from "../hooks/DeleteCard.tsx";
 import { useContent } from "../hooks/useContent.tsx";
 import axios from "axios";
+import { DeleteBrainModel } from "./DeleteContentModel.tsx";
 interface CardProps{       
     title: string;                                 
     link: string;                                   
     type: "twitter" | "youtube";
+    contents: any,
+    setContents: any,
+    deleteBrainModal: any,
+    setDeleteBrainModal: any  
 }       
 
                      
@@ -24,11 +29,11 @@ function extractTweetId(url: string): string | undefined {
 //   <TweetContainer {...props} style={{ opacity: 1 }} />
 // );
                          
-export const Card = ({title, link, type}: CardProps) => {
+export const Card = (props: CardProps) => {
 
                         
   console.log("Below is the link we are sending");
-  console.log(link);
+  console.log(props.link);
      
   return (
     <div className="font-medium">
@@ -40,28 +45,30 @@ export const Card = ({title, link, type}: CardProps) => {
             <ShareIcon size="md" />          
             </div>
             <div className="pl-2">
-            {title}   
+            {props.title}   
             </div>    
           </div>  
           <div className="flex pl-12">         
             <div className="pr-2 text-gray-500">
-                 <a href = {link} target = "_blank">
+                 <a href = {props.link} target = "_blank">
                     <ShareIcon size = "md"/>
                  </a> 
               </div>  
                                                                
           </div>  
           <div className="cursor-pointer">
-            <DeleteIcon thelink = {link} ></DeleteIcon>
-          </div>  
+             <DeleteIcon setDeleteBrainModal = {props.setDeleteBrainModal} deleteBrainModal = {props.deleteBrainModal}  thelink = {props.link} ></DeleteIcon>
+
+            <DeleteBrainModel contents = {props.contents} setContents = {props.setContents} link = {props.link} open = {props.deleteBrainModal} onclose={() => props.setDeleteBrainModal(false)}></DeleteBrainModel> 
+          </div>    
         </div>     
          {      
-         type === "youtube" &&   <iframe width="220" height="250" src={link.replace("youtu.be", "youtube.").substring(0,16) + "com/embed" + link.substring(16)} 
+         props.type === "youtube" &&   <iframe width="220" height="250" src={props.link.replace("youtu.be", "youtube.").substring(0,16) + "com/embed" + props.link.substring(16)} 
         title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
          referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
          }         
-  {type === "twitter" && 
-    <Tweet id={extractTweetId(link)}  />  
+  {props.type === "twitter" && 
+    <Tweet id={extractTweetId(props.link)}  />  
   }              
 </div>
       </div>  
