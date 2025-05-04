@@ -14,29 +14,32 @@ import { useContent } from "../hooks/useContent.tsx";
 import { Tweet } from "react-tweet";
 import axios from "axios";
 import { DeleteBrainModel } from "../components/DeleteContentModel.tsx";
+import { useNavigate } from "react-router-dom";
+
 export function Dashboard() {
-    const [deleteBrainModal, setDeleteBrainModal] = useState(false);
-  
-  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const [deleteBrainModal, setDeleteBrainModal] = useState(false); 
+
+  const [modalOpen, setModalOpen] = useState(false); 
   const [sharemodalOpen, setShareBrainModalOpen] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
   const { contents, refresh, shouldRefresh, setContents } = useContent();
 
-  useEffect(() => {
-    console.log("the first contents log is below")
+  useEffect(() => {   
+    console.log("the first contents log is below");
     console.log(contents);
     refresh();
-    console.log("the second contents log is below")
+    console.log("the second contents log is below");
     console.log(contents);
-  }, [modalOpen]); 
+  }, [modalOpen]);
 
-  useEffect(() =>  {
+  useEffect(() => {
     refresh();
     setTimeout(() => {
-      refresh()
-    },10  );
-  }, [deleteBrainModal])
+      refresh();
+    }, 10);
+  }, [deleteBrainModal]);
 
   return (
     <>
@@ -60,9 +63,32 @@ export function Dashboard() {
             }}
           />
 
-            
-
           <div className="flex justify-end gap-4">
+            <Button
+              size="lg"
+              variant="primary"
+              text="Sign out"
+              onClick={() => {
+                axios
+                  .post(
+                    "http://localhost:3000/api/v1/signout",
+                    {
+                      signout: true,
+                    },
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("token"),
+                      },
+                    }
+                  )
+                  .then((response) => {
+                    localStorage.removeItem("token");
+                    console.log("successfully done loging out!");
+                    navigate("/signin");
+                  });
+              }}
+            ></Button>
+
             <Button
               onClick={() => {
                 setModalOpen(true);
@@ -86,7 +112,7 @@ export function Dashboard() {
                   {
                     headers: {
                       Authorization: localStorage.getItem("token"),
-                    }, 
+                    },
                   }
                 );
                 if (response.data) {
@@ -108,26 +134,25 @@ export function Dashboard() {
           <div className="flex p-2 gap-4 flex-wrap display-flex">
             <div className="gap-4 flex flex-wrap">
               {
-                
                 <div>
-                {Array.isArray(contents) ? (
-                  contents.map(({ type, link, title }) => (
-                    <Card
-                      key={link}
-                      deleteBrainModal={deleteBrainModal}
-                      setDeleteBrainModal={setDeleteBrainModal}
-                      setContents={setContents}
-                      contents={contents}
-                      title={title}
-                      link={link}
-                      type={type}
-                    />
-                  ))
-                ) : (
-                  <p>Loading or no content available.</p>
-                )}
-              </div>
-              
+                  {Array.isArray(contents) ? (
+                    contents.map(({ id, type, link, title }) => (
+                      <Card
+                        id={id}
+                        key={id}
+                        deleteBrainModal={deleteBrainModal}
+                        setDeleteBrainModal={setDeleteBrainModal}
+                        setContents={setContents}
+                        contents={contents}
+                        title={title}
+                        link={link}
+                        type={type}
+                      /> 
+                    ))
+                  ) : (
+                    <p>Loading or no content available.</p>
+                  )}
+                </div>
 
                 // printing the contents here if it is tweet
               }

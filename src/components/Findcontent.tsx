@@ -1,18 +1,18 @@
 export async function findDocument(link: String) {
-  try {
+  try {  
       console.log("see see");
       console.log(link);
 
       const response = await fetch(`http://localhost:3000/api/v1/findcontent?link=${(link)}`);
       if (!response.ok) {
-        console.log("network response was not ok line");
+        console.log("network response was not ok line");              
           throw new Error("Network response was not ok");
-      }
-      const data_1 = await response.json();
+      } 
+      const data_1 = await response.json();  
       const id = data_1.response._id;
-      return id;   
+      return id;    
 
-  } catch (error) {
+  } catch (error) { 
       console.error("Error fetching document:", error);
       throw error;
   }

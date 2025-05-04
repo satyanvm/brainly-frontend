@@ -9,27 +9,27 @@ import axios from "axios";
 enum ContentType{         
     Youtube = "youtube",    
     Twitter = "twitter"     
-}           
-            
-export function CreateContentModal({open,  onclose }: {open: boolean, onclose: () => void}){  
+}            
+               
+export function CreateContentModal({open, onclose }: {open: boolean, onclose: () => void}){  
     const titleRef = useRef<HTMLInputElement>(null);
     const linkRef = useRef<HTMLInputElement>(null);
-
+ 
     const [type, setType] = useState(ContentType.Youtube);
     
-    async function deleteContent(){
-            
-        await axios.post(`http://localhost:3000/api/v1/contentdelete`,
-            {                            
-          contentId, userId         
-            },{   
-                headers: {
-                    "Authorization": localStorage.getItem("token")
-                }    
-            }     
-        )                                                        
+    // async function deleteContent(){
+                         
+    //     await axios.post(`http://localhost:3000/api/v1/contentdelete`,
+    //         {                            
+    //       contentId, userId         
+    //         },{   
+    //             headers: {
+    //                 "Authorization": localStorage.getItem("token")
+    //             }    
+    //         }      
+    //     )                                                        
 
-    }
+    // }
 
 
     async function addContent(){                      

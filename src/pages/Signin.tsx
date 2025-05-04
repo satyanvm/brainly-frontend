@@ -30,7 +30,7 @@ export function Signin(ref:any){
         localStorage.setItem("theuserid", id);
 
         // redirect user to the dashboard
-       navigate("/dashboard");
+       navigate("/dashboard"); 
     }
 
 

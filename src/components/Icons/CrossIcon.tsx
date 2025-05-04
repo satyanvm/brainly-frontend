@@ -1,7 +1,14 @@
 import React from "react"
-export function CrossIcon() {
-    return <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+import { DeleteBrainModel } from "../DeleteContentModel"
+interface hehe{
+onclose: any 
+}
+export function CrossIcon(props: hehe) {
+//@ts-ignore
+    return <div onClick = {() => props.onclose()}> 
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
   </svg>
+  </div>
   
 }
