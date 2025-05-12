@@ -13,6 +13,14 @@ export function Signin(ref:any){
     const passwordRef = useRef<any>(null);
     const navigate = useNavigate();
 
+    // async function findUserId(username: any) {
+    //     const response = await axios.post('http://localhost:3000/api/v1/finduserid', {
+    //         username: username
+    //     });
+    //     return response.data.userId;
+    // }
+
+
     async function signin() {
 
         const username = usernameRef.current?.value;
@@ -25,6 +33,11 @@ export function Signin(ref:any){
 
         const jwt = response.data.token;
         //@ts-ignore
+
+        // const userId = findUserId(username);
+
+
+
         const id = response.data.userId;
         localStorage.setItem("token", jwt);
         localStorage.setItem("theuserid", id);

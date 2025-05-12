@@ -24,12 +24,12 @@ const variants = {
 }
   
 export function Button (props: ButtonProps) {
-  return <button onClick={props.onClick} className={`${variants[props.variant]} ${sizeStyles[props.size]}
+  return <button onClick={props.onClick} className={   `${variants[props.variant]} ${sizeStyles[props.size]}
    ${defaultStyles} ${props.fullWidth ? "w-full" : ""} ${props.loading? " disabled opacity-45" : ""}`}>
        {props.startIcon} 
        <div className="ml-2">
        {props.text}     
-       </div>
+       </div>   
         </button>
 }
 

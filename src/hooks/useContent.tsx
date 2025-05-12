@@ -1,48 +1,51 @@
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import {useQuery } from '@tanstack/react-query';
+
 export function useContent() {
     const [contents, setContents] = useState([]);   
-    const [shouldRefresh, setShouldRefresh] = useState(true);
     const token = localStorage.getItem("token");
 
 
 
-    useEffect(() => {      
-        refresh();
-    }, [shouldRefresh]);
 
      function refresh() {    
-        
+        console.log("the refresh function is indeed being called sir")
       
         if (!token) { 
             console.error("No token found. Please sign in.");
             return;
         }
 
-        // setShouldRefresh(false);
-
-            axios.get("http://localhost:3000/api/v1/content", {
-                headers: { "Authorization": token },
-            })
-            .then((response) => {
-    
-                setContents(response.data.content); 
-                setShouldRefresh(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching content:", error);
-                // setShouldRefresh(false);
-            });
-
-
-        // const { data: contents, isLoading } = useQuery({
-        //     queryKey: ['contents'],
-        //     queryFn: someFetching,
-        // });
+ 
+    axios.get("http://localhost:3000/api/v1/content", {
+        headers: { "Authorization": token }, 
+        useId: userId
+    })
+    .then((response) => { 
+ 
+        setContents(response.data.content); 
+    })
+    .catch((error) => {
+        console.error("Error fetching content:", error);
+    });
     
     }
-  
+     useEffect(() => {
+        refresh()
 
-    return { contents, setContents, refresh, shouldRefresh }; 
+    }, []);
+  
+    return { contents, setContents, refresh }; 
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -15,44 +15,47 @@ import { Tweet } from "react-tweet";
 import axios from "axios";
 import { DeleteBrainModel } from "../components/DeleteContentModel.tsx";
 import { useNavigate } from "react-router-dom";
+import { DeleteIcon } from "../components/Icons/DeleteIcon.tsx";
 
 export function Dashboard() {
+  const [shouldRefresh, setShouldRefresh] = useState(true);
+  console.log("Dashboard is rendered");
   const navigate = useNavigate();
   const [deleteBrainModal, setDeleteBrainModal] = useState(false); 
 
   const [modalOpen, setModalOpen] = useState(false); 
   const [sharemodalOpen, setShareBrainModalOpen] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
-  const { contents, refresh, shouldRefresh, setContents } = useContent();
+  const { contents, refresh, setContents } = useContent();
 
-  useEffect(() => {   
-    console.log("the first contents log is below");
-    console.log(contents);
-    refresh();
-    console.log("the second contents log is below");
-    console.log(contents);
-  }, [modalOpen]);
+useEffect(() => {
+  refresh();
+  setIsDelete(false);
+}, [modalOpen, isDelete])
 
-  useEffect(() => {
-    refresh();
-    setTimeout(() => {
-      refresh();
-    }, 10);
-  }, [deleteBrainModal]);
+// // Optional: Refresh when component mounts        
+// useEffect(() => {                                        
+//   refresh();  
+// }, []);                
+                                                              
+console.log(contents);
 
   return (
-    <>
+    <>  
       <div>
         <Sidebar />
         <div className="p-4 ml-72 min-h-screen bg-gray-100 border-green-500">
-          <CreateContentModal
+          <CreateContentModal                    
+            setContents = {setContents}
             open={modalOpen}
             onclose={() => {
               setModalOpen(false);
+              setShouldRefresh(false);
               // just re-render all the components here, so that the new tweet comes nicely in the first try only
               console.log("Button clicked");
-            }}
+            }}  
           ></CreateContentModal>
 
           <ShareContentModel
@@ -60,6 +63,7 @@ export function Dashboard() {
             open={sharemodalOpen}
             onclose={() => {
               setShareBrainModalOpen(false);
+
             }}
           />
 
@@ -100,7 +104,7 @@ export function Dashboard() {
             ></Button>
 
             <Button
-              onClick={async () => {
+              onClick={async () => {   
                 setShareBrainModalOpen(true);
                 //  onclose()
                 const response = await axios.post(
@@ -109,13 +113,13 @@ export function Dashboard() {
                     share: true,
                     userId: "ObjectId('67cc525aaa297042d30644eb')",
                   },
-                  {
+                  {    
                     headers: {
                       Authorization: localStorage.getItem("token"),
                     },
                   }
                 );
-                if (response.data) {
+                if (response.data) { 
                   const shareUrl = `http://localhost:5173/share/${response.data.hash}`;
                   setShareUrl(shareUrl);
                   console.log("Below is the shareurl");
@@ -123,7 +127,7 @@ export function Dashboard() {
                   // alert(`your share url is ${shareUrl}`);
                 } else {
                   alert("Response is empty");
-                }
+                } 
               }}
               size="lg"
               variant="secondary"
@@ -137,16 +141,18 @@ export function Dashboard() {
                 <div>
                   {Array.isArray(contents) ? (
                     contents.map(({ id, type, link, title }) => (
-                      <Card
+                      <Card 
+                        shouldRefresh = {shouldRefresh}
+                        setShouldRefresh = {setShouldRefresh}
                         id={id}
-                        key={id}
                         deleteBrainModal={deleteBrainModal}
                         setDeleteBrainModal={setDeleteBrainModal}
                         setContents={setContents}
-                        contents={contents}
+                        contents={contents}  
                         title={title}
                         link={link}
-                        type={type}
+                        type={type}   
+                        setIsDelete = {setIsDelete} 
                       /> 
                     ))
                   ) : (
@@ -165,6 +171,6 @@ export function Dashboard() {
       </div>
     </>
   );
-}
+}     
 
 export default Dashboard;

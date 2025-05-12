@@ -6,12 +6,13 @@ import { Button } from "./Button.tsx";
 import { Input } from "./Input.tsx";
 import { BACKEND_URL } from "./Config.ts";
 import axios from "axios";                                             
+import { useContent } from "../hooks/useContent.tsx";
 enum ContentType{         
     Youtube = "youtube",    
     Twitter = "twitter"     
 }            
                
-export function CreateContentModal({open, onclose }: {open: boolean, onclose: () => void}){  
+export function CreateContentModal({setContents, open, onclose }: {setContents: any ,open: boolean, onclose: () => void}){  
     const titleRef = useRef<HTMLInputElement>(null);
     const linkRef = useRef<HTMLInputElement>(null);
  
@@ -30,7 +31,7 @@ export function CreateContentModal({open, onclose }: {open: boolean, onclose: ()
     //     )                                                        
 
     // }
-
+const {refresh} = useContent();
 
     async function addContent(){                      
         const title = titleRef.current?.value;
@@ -45,7 +46,13 @@ export function CreateContentModal({open, onclose }: {open: boolean, onclose: ()
                         "Authorization": localStorage.getItem("token")
                     }    
                 }     
-            )
+            ).then((response) => {
+                console.log("the response from CreateContentModal is ", response.data);
+                setContents(response.data);
+                setTimeout(() => {
+                    refresh();
+        },2000);
+            })  
                    
             onclose();
         } else{

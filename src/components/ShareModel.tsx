@@ -48,7 +48,7 @@ export function ShareContentModel({open,  onclose , shareUrl}: {open: boolean, o
                                    
                                     }
                                    }>  </Button> 
-                                  Your url is http://localhost:5173/share/${shareUrl}
+                                  {shareUrl}
 
                                 </div>
                                 </div>
