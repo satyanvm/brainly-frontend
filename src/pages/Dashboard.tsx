@@ -1,6 +1,6 @@
 import { use, useEffect, useState } from "react";
 import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
+import viteLogo from "/vite.svg";  
 import "../App.css";
 import React from "react";
 import { Button } from "../components/Button.tsx";
@@ -27,20 +27,18 @@ export function Dashboard() {
   const [sharemodalOpen, setShareBrainModalOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
+// const {refresh} = useContent(); 
+const { contents, refresh, setContents } = useContent();
 
-  const { contents, refresh, setContents } = useContent();
-
-useEffect(() => {
+useEffect(() => { 
   refresh();
   setIsDelete(false);
 }, [modalOpen, isDelete])
 
-// // Optional: Refresh when component mounts        
-// useEffect(() => {                                        
-//   refresh();  
-// }, []);                
-                                                              
-console.log(contents);
+            
+
+console.log("Below is the contents printed");
+console.log(contents);      
 
   return (
     <>  
@@ -79,7 +77,7 @@ console.log(contents);
                     {
                       signout: true,
                     },
-                    {
+                    {          
                       headers: {
                         Authorization: localStorage.getItem("token"),
                       },

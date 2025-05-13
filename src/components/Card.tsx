@@ -7,8 +7,8 @@ import { useContent } from "../hooks/useContent.tsx";
 import axios from "axios";
 import { DeleteBrainModel } from "./DeleteContentModel.tsx";
 import { findDocument } from "./Findcontent.tsx";
-import mongoose from "mongoose";
-interface CardProps{  
+import mongoose from "mongoose"; 
+interface CardProps{    
     id: string,     
     title: string;                                 
     link: string;                                   
@@ -22,7 +22,7 @@ interface CardProps{
     setIsDelete: any
  }           
     
-                     
+                         
 // create a function that will extract the tweet-id from the tweet 
 function extractTweetId(url: string): string | undefined {
   const match = url.match(/\/status\/(\d+)/);
@@ -100,6 +100,7 @@ export const Card = (props: CardProps) => {
           referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
           }         
     {props.type === "twitter" && 
+    //@ts-ignore
       <Tweet id={extractTweetId(props.link)}  />  
     }              
   </div>

@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import {useQuery } from '@tanstack/react-query';
+import jwt from "jsonwebtoken";
 
 export function useContent() {
     const [contents, setContents] = useState([]);   
-    const token = localStorage.getItem("token");
-
-
-
+    const token = localStorage.getItem("token");    
 
      function refresh() {    
         console.log("the refresh function is indeed being called sir")
@@ -19,10 +17,9 @@ export function useContent() {
 
  
     axios.get("http://localhost:3000/api/v1/content", {
-        headers: { "Authorization": token }, 
-        useId: userId
+        headers: { "Authorization": token }
     })
-    .then((response) => { 
+    .then((response) => {  
  
         setContents(response.data.content); 
     })
