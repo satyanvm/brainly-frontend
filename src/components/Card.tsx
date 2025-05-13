@@ -8,6 +8,8 @@ import axios from "axios";
 import { DeleteBrainModel } from "./DeleteContentModel.tsx";
 import { findDocument } from "./Findcontent.tsx";
 import mongoose from "mongoose"; 
+import { TweetWithOverlay } from "./TweetsWithOverlay.tsx";
+import { XEmbed } from 'react-social-media-embed';
 interface CardProps{    
     id: string,     
     title: string;                                 
@@ -35,28 +37,14 @@ function extractTweetId(url: string): string | undefined {
 // ); 
                          
 export const Card = (props: CardProps) => {
-  const hasRunRef = useRef(false);     
+   const hasRunRef = useRef(false);     
   console.log("Below is the link we are sending");
   console.log(props.link);
-          
-// useEffect(() => {   
-//   if (!hasRunRef.current) { 
-//     console.log("before findDocument");
-//      findDocument(props.link).then((res) => {
-//   console.log("again the link is below hehe");    
-//   console.log(props.link);
-//     console.log("below is the res");
-//     console.log(res);  
-//     hasRunRef.current = true;          
-//    })    
-//    .catch((err) => {    
-//     console.error("error in findDocument:", err);
-//   });
-// }
-// }, []);    
-     
-    return ( 
+
+    return (   
       <div className="font-medium">
+              
+
         <div className=" p-4 bg-white rounded-md shadow-md border-gray-200 border max-w-72">
           <div className=" flex">
             <div className="flex items-center">
@@ -87,9 +75,7 @@ export const Card = (props: CardProps) => {
                 }
             }} deleteBrainModal = {props.deleteBrainModal} contents ={props.contents} setContents={props.setContents} setDeleteBrainModal = {props.setDeleteBrainModal}   thelink = {props.link} ></DeleteIcon>  
 
-              {/* <DeleteBrainModel id = {id} open = {props.deleteBrainModal} onclose={() => {
-                      props.setDeleteBrainModal(false); 
-                  }}  contents = {props.contents} setContents={props.setContents} ></DeleteBrainModel> */}
+           
               </div>
 
             </div>    
@@ -101,7 +87,7 @@ export const Card = (props: CardProps) => {
           }         
     {props.type === "twitter" && 
     //@ts-ignore
-      <Tweet id={extractTweetId(props.link)}  />  
+      <XEmbed url = {props.link}  />  
     }              
   </div>
         </div>  

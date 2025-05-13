@@ -17,7 +17,19 @@ import { DeleteBrainModel } from "../components/DeleteContentModel.tsx";
 import { useNavigate } from "react-router-dom";
 import { DeleteIcon } from "../components/Icons/DeleteIcon.tsx";
 
+ function findUsername(){
+   axios.get('http://localhost:3000/api/v1/findusername', {
+    headers: {
+                        "Authorization": localStorage.getItem("token")
+                    }
+ } ).then((response) => {
+  console.log("the response from findUsername is", response);
+ })
+                  
+}
+
 export function Dashboard() {
+    const [username, setUsername]  = useState("");
   const [shouldRefresh, setShouldRefresh] = useState(true);
   console.log("Dashboard is rendered");
   const navigate = useNavigate();
@@ -40,11 +52,24 @@ useEffect(() => {
 console.log("Below is the contents printed");
 console.log(contents);      
 
+
+     console.log("here before the axios.get");
+ axios.get('http://localhost:3000/api/v1/findusername', {
+    headers: {
+                        "Authorization": localStorage.getItem("token")
+                    }
+ } ).then((response) => {
+  console.log("the response from findUsername is", response);
+   console.log("the username is " + response.data.username);
+   setUsername(response.data.username);
+
+})
+
   return (
     <>  
       <div>
         <Sidebar />
-        <div className="p-4 ml-72 min-h-screen bg-gray-100 border-green-500">
+        <div className="p-4 ml-72 min-h-screen bg-gray-100 border-green-500 ">
           <CreateContentModal                    
             setContents = {setContents}
             open={modalOpen}
@@ -55,7 +80,6 @@ console.log(contents);
               console.log("Button clicked");
             }}  
           ></CreateContentModal>
-
           <ShareContentModel
             shareUrl={shareUrl}
             open={sharemodalOpen}
@@ -64,8 +88,10 @@ console.log(contents);
 
             }}
           />
-
-          <div className="flex justify-end gap-4">
+          <div  className="font-bold flex justify-end gap-4">
+            <div className="pt-1.5">
+            Hi there {username}
+            </div>
             <Button
               size="lg"
               variant="primary"
@@ -133,10 +159,10 @@ console.log(contents);
               startIcon={<ShareIcon size="md"></ShareIcon>}
             ></Button>
           </div>
-          <div className="flex p-2 gap-4 flex-wrap display-flex">
+          <div className="flex p-2 gap-4 flex-wrap display-flex flex">
             <div className="gap-4 flex flex-wrap">
               {
-                <div>
+                <div className="flex flex-row">
                   {Array.isArray(contents) ? (
                     contents.map(({ id, type, link, title }) => (
                       <Card 
@@ -166,7 +192,8 @@ console.log(contents);
               <Card title = "Arvind sir TEDx talk" link = "https://youtu.be/MD4W_e3dJPs?si=f3QF3G9cvb48TDNK" type = "youtube"/> */}
           </div>
         </div>
-      </div>
+        </div>
+      {/* </div> */}
     </>
   );
 }     

@@ -9,7 +9,7 @@ export function Sidebar(){
        <div className=" pr-1 text-purple-600">
         <Logo/>
        </div>
-        <div className="flex text-2xl pl-1 text-gray-800">
+        <div className="font-bold flex text-2xl pl-1 text-gray-800">
             Brainly
         </div>
         </div> 
